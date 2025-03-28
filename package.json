@@ -1,7 +1,7 @@
 {
   "name": "guake-ssh",
   "version": "0.0.1",
-  "description": "Systray menu to connect to SSH hosts configured in ~/.ssh/config.d using Guake.",
+  "description": "Systray menu to connect to SSH hosts configured in ~/.ssh/config and all files in ~/.ssh/config.d using Guake.",
   "author": "Paulo Ramalho <pramalho78@hotmail.com>",
   "homepage": "https://github.com/pramalho/guake-ssh-extension",
   "repository": {
