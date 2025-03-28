@@ -1,0 +1,38 @@
+{
+  "name": "guake-ssh",
+  "version": "0.0.1",
+  "description": "Systray menu to connect to SSH hosts configured in ~/.ssh/config.d using Guake.",
+  "author": "Paulo Ramalho <pramalho78@hotmail.com>",
+  "homepage": "https://github.com/pramalho/guake-ssh-extension",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pramalho/guake-ssh-extension.git"
+  },
+  "config": {
+    "domain": "pramalho.github.com"
+  },
+  "main": "src/extension.js",
+  "scripts": {
+    "clean": "rm -rf dist && rm -f ${npm_package_name}.zip",
+    "pack": "mkdir -p dist && cp metadata.json dist/ && cp src/extension.js dist/ && cp resources/stylesheet.css dist/ && cd dist && zip ../${npm_package_name}.zip -9r .",
+    "install-extension": "touch ${HOME}/.local/share/gnome-shell/extensions/${npm_package_name}@${npm_package_config_domain} && rm -rf ${HOME}/.local/share/gnome-shell/extensions/${npm_package_name}@${npm_package_config_domain} && mv dist ${HOME}/.local/share/gnome-shell/extensions/${npm_package_name}@${npm_package_config_domain}",
+    "setup": "npm run clean && npm run pack && npm run install-extension",
+    "debug": "dbus-run-session -- gnome-shell --nested --wayland"
+  },
+  "dependencies": {
+    "gi": "^1.0.0"
+  },
+  "devDependencies": {
+  },
+  "keywords": [
+    "gnome-shell",
+    "extension",
+    "ssh",
+    "guake"
+  ],
+  "engines": {
+    "gnome-shell": ">=40.0"
+  },
+  "license": "MIT",
+  "type": "commonjs"
+}

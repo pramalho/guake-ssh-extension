@@ -1,0 +1,9 @@
+{
+    "name": "Guake SSH",
+    "description": "Systray menu to connect to SSH hosts configured in ~/.ssh/config.d using Guake.",
+    "uuid": "guake-ssh@pramalho.github.com",
+    "shell-version": [
+      "46"
+    ],
+    "url": "https://github.com/pramalho/guake-ssh-extension"
+}
