@@ -2,3 +2,5 @@ guake-ssh.zip
 package-lock.json
 node_modules
 *.log
+
+dist/
