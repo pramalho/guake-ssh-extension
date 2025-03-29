@@ -16,37 +16,37 @@ class GuakeSSH extends PanelMenu.Button {
     _init() {
         super._init(0.0, _("SSH Connections"));
 
-        // Ícone no painel
+        // Icon in the panel
         this.add_child(new St.Icon({
             icon_name: "utilities-terminal-symbolic",
             style_class: "system-status-icon"
         }));
 
-        // Adiciona o botão ao painel
+        // Adds the button to the panel
         Main.panel.addToStatusArea("guake-ssh", this);
 
-        // Criar uma secção scrollável
+        // Create a scrollable section
         this._scrollableSection = new PopupMenu.PopupMenuSection();
 
-        // Criar uma ScrollView para permitir scroll
+        // Create a ScrollView to enable scrolling
         let scrollView = new St.ScrollView({
             style_class: "vfade",
-            overlay_scrollbars: true, // Usa scrollbars sobrepostas
-            hscrollbar_policy: St.PolicyType.NEVER, // Sem scroll horizontal
-            vscrollbar_policy: St.PolicyType.AUTOMATIC, // Scroll vertical automático
+            overlay_scrollbars: true,
+            hscrollbar_policy: St.PolicyType.NEVER,
+            vscrollbar_policy: St.PolicyType.AUTOMATIC,
         });
 
-        // Adicionar a secção dentro da ScrollView (Correção)
+        // Add the section inside the ScrollView
         scrollView.set_child(this._scrollableSection.actor);
         this.menu.box.add_child(scrollView);
 
-        // Aplica um estilo CSS para limitar a altura
+        // Applies a CSS style to limit the height
         scrollView.set_style("max-height: 50em;");
 
-        // Adiciona um separador
+        // Adds a separator
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        // Carrega os hosts SSH
+        // Load SSH hosts
         this._loadSSHHosts();
     }
 
