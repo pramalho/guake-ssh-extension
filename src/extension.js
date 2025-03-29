@@ -1,36 +1,36 @@
-import GObject from 'gi://GObject';
+import GObject from "gi://GObject";
 // import St from 'gi://St';
-import GLib from 'gi://GLib';
-import Gio from 'gi://Gio';
-import Gdk from 'gi://Gdk';
+import GLib from "gi://GLib";
+import Gio from "gi://Gio";
+import Gdk from "gi://Gdk";
 const { St } = imports.gi;
 
-import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
-import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
-import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import {Extension, gettext as _} from "resource:///org/gnome/shell/extensions/extension.js";
+import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
+import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
 
-import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
 const GuakeSSH = GObject.registerClass(
 class GuakeSSH extends PanelMenu.Button {
     _init() {
-        super._init(0.0, _('SSH Connections'));
+        super._init(0.0, _("SSH Connections"));
 
         // Ícone no painel
         this.add_child(new St.Icon({
-            icon_name: 'utilities-terminal-symbolic',
-            style_class: 'system-status-icon'
+            icon_name: "utilities-terminal-symbolic",
+            style_class: "system-status-icon"
         }));
 
         // Adiciona o botão ao painel
-        Main.panel.addToStatusArea('guake-ssh', this);
+        Main.panel.addToStatusArea("guake-ssh", this);
 
         // Criar uma secção scrollável
         this._scrollableSection = new PopupMenu.PopupMenuSection();
 
         // Criar uma ScrollView para permitir scroll
         let scrollView = new St.ScrollView({
-            style_class: 'vfade',
+            style_class: "vfade",
             overlay_scrollbars: true, // Usa scrollbars sobrepostas
             hscrollbar_policy: St.PolicyType.NEVER, // Sem scroll horizontal
             vscrollbar_policy: St.PolicyType.AUTOMATIC, // Scroll vertical automático
@@ -69,8 +69,8 @@ class GuakeSSH extends PanelMenu.Button {
                 while ((fileInfo = enumerator.next_file(null)) !== null) {
                     let filename = fileInfo.get_name();
 
-                    // Ignore files that end with " hide"
-                    if (filename.endsWith(" hide")) {
+                    // Ignore files that end with "hide"
+                    if (filename.endsWith("hide")) {
                         continue;
                     }
 
@@ -107,9 +107,9 @@ class GuakeSSH extends PanelMenu.Button {
         this._scrollableSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         // Adds the "Refresh Hosts" option
-        let refreshMenuItem = new PopupMenu.PopupMenuItem(_('> Refresh Hosts <'));
-        refreshMenuItem.connect('activate', () => {
-            log('Refreshing SSH hosts...');
+        let refreshMenuItem = new PopupMenu.PopupMenuItem(_("> Refresh Hosts <"));
+        refreshMenuItem.connect("activate", () => {
+            log("Refreshing SSH hosts...");
             let children = this._scrollableSection.actor.get_children();
             for (let child of children) {
                 child.destroy();
@@ -124,7 +124,7 @@ class GuakeSSH extends PanelMenu.Button {
         if (success) {
             let config = new TextDecoder().decode(contents);
             let hostPattern = /Host\s+([^\s]+)/g;
-            config = config.split('\n').filter(line => !line.includes('#hide')).join('\n');
+            config = config.split("\n").filter(line => !line.includes("#hide")).join("\n");
             let hosts = [];
             let match;
             while ((match = hostPattern.exec(config)) !== null) {
@@ -149,7 +149,7 @@ class GuakeSSH extends PanelMenu.Button {
     _addHostToMenu(host) {
         let menuItem = new PopupMenu.PopupMenuItem(`${host}`);
 
-        menuItem.connect('activate', (actor, event) => {
+        menuItem.connect("activate", (actor, event) => {
             let button = event.get_button();
 
             // 3 is the code for the right mouse button
@@ -183,10 +183,10 @@ class GuakeSSH extends PanelMenu.Button {
         let split = button == 2 ? "--split-horizontal" : (button == 3 ? "--split-vertical" : "");
 
 
-        let command = ['guake', split, '-e', `ssh ${host}`];
+        let command = ["guake", split, "-e", `ssh ${host}`];
         GLib.spawn_async(null, command, null, GLib.SpawnFlags.SEARCH_PATH, null);
         // open guake
-        let guakeCommand = ['guake', '--show'];
+        let guakeCommand = ["guake", "--show"];
         GLib.spawn_async(null, guakeCommand, null, GLib.SpawnFlags.SEARCH_PATH, null);
         // close menu
         this.menu.close();

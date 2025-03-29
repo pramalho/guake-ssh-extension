@@ -1,6 +1,13 @@
 # GuakeSSH
 
-GuakeSSH is a GNOME extension that allows you to show SSH connections from .ssh/config file directly from the GNOME panel systray. With this extension, you can easily access your configured SSH hosts from a dropdown menu and connect in the [Guake Terminal](https://guake.github.io/) .
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![ESLint](https://github.com/pramalho/guake-ssh-extension/actions/workflows/eslint.yml/badge.svg)
+
+## Description
+
+GuakeSSH is a GNOME extension that allows you to show SSH connections from .ssh/config file directly from the GNOME panel systray. With this extension, you can easily access your configured SSH hosts from a dropdown menu and connect in the [Guake Terminal](https://guake.github.io/).
+
+
+![GuakeSSH Screenshot](resources/screenshot.png)
 
 ## Usage
 
