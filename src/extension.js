@@ -1,8 +1,9 @@
 import GObject from 'gi://GObject';
-import St from 'gi://St';
+// import St from 'gi://St';
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 import Gdk from 'gi://Gdk';
+const { St } = imports.gi;
 
 import {Extension, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
@@ -15,26 +16,37 @@ class GuakeSSH extends PanelMenu.Button {
     _init() {
         super._init(0.0, _('SSH Connections'));
 
-        // Icon for the button in the panel
+        // Ícone no painel
         this.add_child(new St.Icon({
             icon_name: 'utilities-terminal-symbolic',
             style_class: 'system-status-icon'
         }));
 
-        // Adds this button to the panel
+        // Adiciona o botão ao painel
         Main.panel.addToStatusArea('guake-ssh', this);
 
-        // Scrollable section of the menu
+        // Criar uma secção scrollável
         this._scrollableSection = new PopupMenu.PopupMenuSection();
-        this.menu.addMenuItem(this._scrollableSection);
 
-        // Apply scrolling to the menu
-        this._scrollableSection.actor.set_style("max-height: 20em; overflow-y: auto;");
+        // Criar uma ScrollView para permitir scroll
+        let scrollView = new St.ScrollView({
+            style_class: 'vfade',
+            overlay_scrollbars: true, // Usa scrollbars sobrepostas
+            hscrollbar_policy: St.PolicyType.NEVER, // Sem scroll horizontal
+            vscrollbar_policy: St.PolicyType.AUTOMATIC, // Scroll vertical automático
+        });
 
-        // Adds a separator
+        // Adicionar a secção dentro da ScrollView (Correção)
+        scrollView.set_child(this._scrollableSection.actor);
+        this.menu.box.add_child(scrollView);
+
+        // Aplica um estilo CSS para limitar a altura
+        scrollView.set_style("max-height: 50em;");
+
+        // Adiciona um separador
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        // Load SSH hosts
+        // Carrega os hosts SSH
         this._loadSSHHosts();
     }
 
@@ -56,14 +68,30 @@ class GuakeSSH extends PanelMenu.Button {
                 let fileInfo;
                 while ((fileInfo = enumerator.next_file(null)) !== null) {
                     let filename = fileInfo.get_name();
-                    // If the file is "1-winscp", skip it ... TODO : remove this
-                    if (filename === "1-winscp") {
+
+                    // Ignore files that end with " hide"
+                    if (filename.endsWith(" hide")) {
                         continue;
                     }
+
+                    //if the first line of the file is a comment  with #ignore-file then ignore the file
+                    let filePath = Gio.File.new_for_path(path + filename);
+                    let [success, contents] = filePath.load_contents(null);
+                    if (success) {
+                        let config = new TextDecoder().decode(contents);
+                        if (config.includes("#ignore-file")) {
+                            continue;
+                        }
+                    }
+
                     // Add a separator with the file name
                     let fileSeparator = new PopupMenu.PopupSeparatorMenuItem(filename);
-                    // Remove the first two characters from the file name
-                    fileSeparator.label.text = fileSeparator.label.text.substring(2);
+
+                    // Remove the first two characters from the file name if start number and dash (I organize my files this way)
+                    if (/^\d+-/.test(fileSeparator.label.text)) {
+                        fileSeparator.label.text = fileSeparator.label.text.substring(2);
+                    }
+
                     this._scrollableSection.addMenuItem(fileSeparator);
 
                     let childFile = Gio.File.new_for_path(path + filename);
@@ -96,10 +124,16 @@ class GuakeSSH extends PanelMenu.Button {
         if (success) {
             let config = new TextDecoder().decode(contents);
             let hostPattern = /Host\s+([^\s]+)/g;
+            config = config.split('\n').filter(line => !line.includes('#hide')).join('\n');
             let hosts = [];
             let match;
             while ((match = hostPattern.exec(config)) !== null) {
-                hosts.push(match[1]);
+                let host = match[1];
+                // ignore names with ftp in any part of the name
+                if (host.includes("ftp")) {
+                    continue;
+                }
+                hosts.push(host);
             }
 
             // Sort the hosts alphabetically (case insensitive)

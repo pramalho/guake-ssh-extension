@@ -10,6 +10,20 @@ After installation, you will see a new icon in the GNOME panel. Click the icon t
 - **Right mouse click:** split vertical current tab
 - **Middle mouse click:** split horizontal current tab
 
+### Hidding SSH Config files on .ssh/config.d
+
+If you want a file inside `config.d` to not be listed in the menu, you can either append the word `hide` to the end of the file name or add `#ignore-file` as the first line of the file.
+
+### Hiding SSH Connections
+
+If you want to hide an SSH connection from the dropdown menu, add `#hide` at the end of the Host line in your `.ssh/config` file. For example:
+
+```ssh-config
+Host example-host #hide
+   HostName example.com
+   User username
+```
+
 ## Installation
 
 1. Clone this repository:
@@ -36,8 +50,8 @@ After installation, you will see a new icon in the GNOME panel. Click the icon t
 Contributions are welcome! Feel free to open issues or pull requests.
 
 ## TODO
-- [ ] Scroll when to many connections
-- [ ] Option to hide unnecessary connections
+- [x] ~~Scroll when to many connections~~
+- [x] ~~Option to hide unnecessary connections~~
 - [ ] Publish on gnome extensions :D
 
 ## License
