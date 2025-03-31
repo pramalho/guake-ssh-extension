@@ -150,7 +150,7 @@ class GuakeSSH extends PanelMenu.Button {
         menuItem.connect("activate", (actor, event) => {
             let button = event.get_button();
 
-            // Chamar a função para conectar ao SSH
+            // Call the function to connect to SSH
             this._connectSSH(host, button);
         });
 
