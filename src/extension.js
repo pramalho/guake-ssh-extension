@@ -1,9 +1,7 @@
 import GObject from "gi://GObject";
-// import St from 'gi://St';
+import St from 'gi://St';
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
-import Gdk from "gi://Gdk";
-const { St } = imports.gi;
 
 import {Extension, gettext as _} from "resource:///org/gnome/shell/extensions/extension.js";
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
@@ -151,19 +149,6 @@ class GuakeSSH extends PanelMenu.Button {
 
         menuItem.connect("activate", (actor, event) => {
             let button = event.get_button();
-
-            // 3 is the code for the right mouse button
-            // let rightClick = button === 3;
-            // let middleClick = button === 2;
-            // let ctrlPressed = (event.get_state() & Gdk.ModifierType.CONTROL_MASK) !== 0;
-
-            // log(`Right click detected: ${rightClick}`);
-            // log(`Middle click detected: ${middleClick}`);
-            // log(`Ctrl pressed: ${ctrlPressed}`);
-
-            // let split = middleClick || ctrlPressed ? true : false;
-
-            // let split = middleClick ? "--split-horizontal" : (rightClick ? "--split-vertical" : "");
 
             // Chamar a função para conectar ao SSH
             this._connectSSH(host, button);
