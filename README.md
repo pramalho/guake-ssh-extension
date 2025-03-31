@@ -33,6 +33,12 @@ Host example-host #hide
 
 ## Installation
 
+### Installation from Gnome Extensions
+
+[<img alt="" height="100" src="https://raw.githubusercontent.com/andyholmes/gnome-shell-extensions-badge/master/get-it-on-ego.svg?sanitize=true">](https://extensions.gnome.org/extension/8012/)
+
+### Installation from GitHub repository
+
 1. Clone this repository:
    ```shell
    git clone hhttps://github.com/pramalho/guake-ssh-extension
@@ -59,7 +65,7 @@ Contributions are welcome! Feel free to open issues or pull requests.
 ## TODO
 - [x] ~~Scroll when to many connections~~
 - [x] ~~Option to hide unnecessary connections~~
-- [ ] Publish on gnome extensions :D
+- [x] ~~Publish on gnome extensions~~
 
 ## License
 
