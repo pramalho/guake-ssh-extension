@@ -6,5 +6,7 @@
       "46"
     ],
     "url": "https://github.com/pramalho/guake-ssh-extension",
-    "version": 2
+    "version": 4,
+    "settings-schema": "org.gnome.shell.extensions.guake-ssh",
+    "preferences": "prefs.js"
 }

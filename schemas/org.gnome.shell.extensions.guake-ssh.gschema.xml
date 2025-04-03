@@ -1,0 +1,9 @@
+<schemalist>
+    <schema id="org.gnome.shell.extensions.guake-ssh.rename-tab" path="/org/gnome/shell/extensions/guake-ssh/">
+        <key name="auto-rename-tab" type="b">
+            <default>false</default>
+            <summary>Automatically rename new tabs</summary>
+            <description>Enable or disable automatic renaming of new tabs based on the SSH connection.</description>
+        </key>
+    </schema>
+</schemalist>

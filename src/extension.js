@@ -3,6 +3,8 @@ import St from "gi://St";
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 
+const SETTINGS_SCHEMA = "org.gnome.shell.extensions.guake-ssh";
+
 import {Extension, gettext as _} from "resource:///org/gnome/shell/extensions/extension.js";
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
@@ -13,6 +15,8 @@ const GuakeSSH = GObject.registerClass(
 class GuakeSSH extends PanelMenu.Button {
     _init() {
         super._init(0.0, _("SSH Connections"));
+
+        this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
 
         // Icon in the panel
         this.add_child(new St.Icon({
@@ -170,6 +174,14 @@ class GuakeSSH extends PanelMenu.Button {
 
         let command = ["guake", split, "-e", `ssh ${host}`];
         GLib.spawn_async(null, command, null, GLib.SpawnFlags.SEARCH_PATH, null);
+
+
+        let rename = this._settings.get_int("auto-rename-tab");
+        if (rename) {
+            let renameCommand = ["guake", "--rename-tab", `${host}`];
+            GLib.spawn_async(null, renameCommand, null, GLib.SpawnFlags.SEARCH_PATH, null);
+        }
+
         // open guake
         let guakeCommand = ["guake", "--show"];
         GLib.spawn_async(null, guakeCommand, null, GLib.SpawnFlags.SEARCH_PATH, null);
