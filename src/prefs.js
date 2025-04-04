@@ -5,7 +5,6 @@ import {ExtensionPreferences, gettext as _} from "resource:///org/gnome/Shell/Ex
 
 export default class GuakeSSHPreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
-        // Create a preferences page, with a single group
         const page = new Adw.PreferencesPage({
             title: _("Guake SSH Preferences"),
             icon_name: "dialog-information-symbolic",
@@ -18,7 +17,6 @@ export default class GuakeSSHPreferences extends ExtensionPreferences {
         });
         page.add(group);
 
-        // Create a new preferences row
         const row = new Adw.SwitchRow({
             title: _("Rename Guake Tab"),
             subtitle: _("Rename the new Guake tab to the SSH host name"),

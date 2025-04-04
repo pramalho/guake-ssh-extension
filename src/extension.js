@@ -15,8 +15,6 @@ class GuakeSSH extends PanelMenu.Button {
     _init(settings) { // Recebe settings como parâmetro
         super._init(0.0, _("SSH Connections"));
 
-        console.log("settings2: " + settings.get_boolean("rename-tab"));
-
         this._settings = settings; // Armazena settings na instância
 
         // Icon in the panel
