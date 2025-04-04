@@ -17,10 +17,8 @@
 
     "install-extension": "touch ${HOME}/.local/share/gnome-shell/extensions/${npm_package_name}@${npm_package_config_domain} && rm -rf ${HOME}/.local/share/gnome-shell/extensions/${npm_package_name}@${npm_package_config_domain} && mv dist ${HOME}/.local/share/gnome-shell/extensions/${npm_package_name}@${npm_package_config_domain}",
 
-    "install-extension2": "mkdir -p ${HOME}/.local/share/gnome-shell/extensions/${npm_package_name}@${npm_package_config_domain} && cp -r src metadata.json schemas ${HOME}/.local/share/gnome-shell/extensions/${npm_package_name}@${npm_package_config_domain}",
-
-    "pack": "mkdir -p dist && cp metadata.json dist/ && cp -r schemas/ dist/ && cp src/extension.js dist/ && cp src/prefs.js dist/ && rm dist/schemas/gschemas.compiled && cd dist && zip ../${npm_package_name}.zip -9r .",
-    "setup": "npm run clean && npm run pack && npm run install-extension",
+    "pack": "mkdir -p dist && cp metadata.json dist/ && cp -r src/schemas/ dist/ && cp -r src/* dist/ && cd dist && zip ../${npm_package_name}.zip -9r .",
+    "setup": "npm run clean && npm run pack && glib-compile-schemas ./dist/schemas && npm run install-extension",
 
     "lint": "npx eslint src/**/*.js",
     "lint:fix": "npx eslint --fix src/**/*.js"

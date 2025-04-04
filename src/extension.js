@@ -3,8 +3,6 @@ import St from "gi://St";
 import GLib from "gi://GLib";
 import Gio from "gi://Gio";
 
-const SETTINGS_SCHEMA = "org.gnome.shell.extensions.guake-ssh";
-
 import {Extension, gettext as _} from "resource:///org/gnome/shell/extensions/extension.js";
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
@@ -13,10 +11,13 @@ import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
 const GuakeSSH = GObject.registerClass(
 class GuakeSSH extends PanelMenu.Button {
-    _init() {
+
+    _init(settings) { // Recebe settings como parâmetro
         super._init(0.0, _("SSH Connections"));
 
-        this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
+        console.log("settings2: " + settings.get_boolean("rename-tab"));
+
+        this._settings = settings; // Armazena settings na instância
 
         // Icon in the panel
         this.add_child(new St.Icon({
@@ -111,7 +112,6 @@ class GuakeSSH extends PanelMenu.Button {
         // Adds the "Refresh Hosts" option
         let refreshMenuItem = new PopupMenu.PopupMenuItem(_("> Refresh Hosts <"));
         refreshMenuItem.connect("activate", () => {
-            log("Refreshing SSH hosts...");
             let children = this._scrollableSection.actor.get_children();
             for (let child of children) {
                 child.destroy();
@@ -119,6 +119,7 @@ class GuakeSSH extends PanelMenu.Button {
             this._loadSSHHosts(); // reload hosts
         });
         this._scrollableSection.addMenuItem(refreshMenuItem);
+
     }
 
     _parseSSHConfigFile(file) {
@@ -171,15 +172,16 @@ class GuakeSSH extends PanelMenu.Button {
 
         let split = button == 2 ? "--split-horizontal" : (button == 3 ? "--split-vertical" : "");
 
-
         let command = ["guake", split, "-e", `ssh ${host}`];
         GLib.spawn_async(null, command, null, GLib.SpawnFlags.SEARCH_PATH, null);
 
-
-        let rename = this._settings.get_int("auto-rename-tab");
-        if (rename) {
-            let renameCommand = ["guake", "--rename-tab", `${host}`];
-            GLib.spawn_async(null, renameCommand, null, GLib.SpawnFlags.SEARCH_PATH, null);
+        if (split == "") {
+            let rename = this._settings.get_boolean("rename-tab");
+            if (rename) {
+                // Rename the Guake tab to the SSH host name
+                let renameCommand = ["guake", "-r", `${host}`];
+                GLib.spawn_async(null, renameCommand, null, GLib.SpawnFlags.SEARCH_PATH, null);
+            }
         }
 
         // open guake
@@ -192,12 +194,15 @@ class GuakeSSH extends PanelMenu.Button {
 
 
 export default class GuakeSSHExtension extends Extension {
+
     enable() {
-        this._indicator = new GuakeSSH();
+        this._settings = this.getSettings();
+        this._indicator = new GuakeSSH(this._settings); // Passa _settings para GuakeSSH
         Main.panel.addToStatusArea(this.uuid, this._indicator);
     }
 
     disable() {
+        this._settings = null;
         this._indicator.destroy();
         this._indicator = null;
     }
