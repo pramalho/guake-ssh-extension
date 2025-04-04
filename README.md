@@ -62,11 +62,6 @@ Host example-host #hide
 
 Contributions are welcome! Feel free to open issues or pull requests.
 
-## TODO
-- [x] ~~Scroll when to many connections~~
-- [x] ~~Option to hide unnecessary connections~~
-- [x] ~~Publish on gnome extensions~~
-
 ## License
 
 This extension is licensed under the [MIT License](LICENSE).

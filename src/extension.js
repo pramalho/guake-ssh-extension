@@ -108,7 +108,13 @@ class GuakeSSH extends PanelMenu.Button {
         this._scrollableSection.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         // Adds the "Refresh Hosts" option
-        let refreshMenuItem = new PopupMenu.PopupMenuItem(_("> Refresh Hosts <"));
+        let refreshMenuItem = new PopupMenu.PopupMenuItem("");
+        let refreshIcon = new St.Icon({
+            icon_name: "view-refresh-symbolic",
+            style_class: "popup-menu-icon"
+        });
+        refreshMenuItem.add_child(refreshIcon);
+        refreshMenuItem.add_child(new St.Label({ text: _("Refresh Hosts") }));
         refreshMenuItem.connect("activate", () => {
             let children = this._scrollableSection.actor.get_children();
             for (let child of children) {
@@ -130,8 +136,8 @@ class GuakeSSH extends PanelMenu.Button {
             let match;
             while ((match = hostPattern.exec(config)) !== null) {
                 let host = match[1];
-                // ignore names with ftp in any part of the name
-                if (host.includes("ftp")) {
+                // ignore names with ftp in any part of the name but not sftp
+                if (host.includes("ftp") && !host.includes("sftp")) {
                     continue;
                 }
                 hosts.push(host);
