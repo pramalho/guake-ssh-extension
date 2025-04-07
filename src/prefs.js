@@ -36,7 +36,7 @@ export default class GuakeSSHPreferences extends ExtensionPreferences {
         helpGroup.add(usage);
 
         const hidefiles = new Adw.ActionRow({
-            title: _("Hidding SSH Config files on .ssh/config.d"),
+            title: _("Hiding SSH Config files on .ssh/config.d"),
             subtitle: _("If you want a file inside config.d to not be listed in the menu, you can either append the word hide to the end of the file name or add #ignore-file as the first line of the file."),
         });
         helpGroup.add(hidefiles);
