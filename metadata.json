@@ -2,9 +2,7 @@
     "name": "Guake SSH",
     "description": "Systray menu to connect to SSH hosts configured in ~/.ssh/config.d using Guake.",
     "uuid": "guake-ssh@pramalho.github.com",
-    "shell-version": [
-      "46"
-    ],
+    "shell-version": ["46","47","48"],
     "url": "https://github.com/pramalho/guake-ssh-extension",
     "gettext-domain": "guake-ssh@pramalho.github.com",
     "settings-schema": "org.gnome.shell.extensions.guake-ssh"
