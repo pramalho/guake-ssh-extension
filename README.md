@@ -65,6 +65,15 @@ Host example-host #hide
 
 Contributions are welcome! Feel free to open issues or pull requests.
 
+## FAQ
+
+### I don't know how to load/import the files in .ssh/config.d?
+For those who don't know how to load/import the `.ssh/config.d` files into the main `config` file, you just need to add the following line to the `.ssh/config` file:  
+
+```ssh-config
+Include config.d/* 
+```
+
 ## License
 
 This extension is licensed under the [MIT License](LICENSE).
